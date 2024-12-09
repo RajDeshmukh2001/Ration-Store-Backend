@@ -7,6 +7,10 @@ const updateUserProfile = async (req, res) => {
         const formData = await req.body;
         const { fullname, email, phone, RFID, rationCardType, familyMembers, address } = formData;
 
+        if (!fullname || !email || !phone || !RFID || !rationCardType || !familyMembers || !address) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
         const nameRegex = /^[a-zA-Z\s]+$/;
         if (!nameRegex.test(formData.fullname)) {
             return res.status(400).json({ message: "Fullname must contain only letters and spaces" });
