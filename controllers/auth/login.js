@@ -25,7 +25,8 @@ const login = async (req, res) => {
         res.cookie('jwtoken', token, {
             maxAge: 3600000,
             httpOnly: true,
-            sameSite: 'Lax',
+            sameSite: 'None',
+            secure: true, 
         });
 
         res.status(200).json({ message: 'Login successfull', account, token });

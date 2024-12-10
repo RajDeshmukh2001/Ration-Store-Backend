@@ -36,7 +36,8 @@ const userRegistration = async (req, res) => {
             res.cookie('jwtoken', token, {
                 maxAge: 3600000,
                 httpOnly: true,
-                sameSite: 'Lax',
+                sameSite: 'None',
+                secure: true, 
             });
 
             return res.status(200).json({ message: "Registration successfull", userData: user });
