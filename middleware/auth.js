@@ -5,9 +5,15 @@ const Admin = require('../models/Admin');
 const auth = async (req, res, next) => {
     try {
         const token = req.cookies.jwtoken;
-        
+
+        if (!token) {
+            req.account = null;
+            req.token = null;
+            return next();
+        }
+
         const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
-        
+
         const [user, admin] = await Promise.all([
             User.findOne({ _id: verifyToken._id }).select('-password'),
             Admin.findOne({ _id: verifyToken._id, isAdmin: true }).select('-password')
@@ -24,7 +30,7 @@ const auth = async (req, res, next) => {
 
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Unauthorized access SFdgfdgfh', error });
+        res.status(500).json({ message: 'Unauthorized access', error });
     }
 }
 
